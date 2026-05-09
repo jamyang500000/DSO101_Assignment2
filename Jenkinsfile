@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = 'yourdockerhub/todo-app'
+        DOCKER_IMAGE = 'jammiii/todo-app'
         DOCKER_TAG = "${env.BUILD_NUMBER}"
     }
 
@@ -16,7 +16,7 @@ pipeline {
             steps {
                 echo 'Checking out code from GitHub...'
                 git branch: 'main',
-                    url: 'https://github.com/yourusername/assignment1-node-app.git',
+                    url: 'https://github.com/jamyang500000/DSO101_Assignment2.git',
                     credentialsId: 'github-credentials'
             }
         }
@@ -25,7 +25,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installing npm dependencies...'
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
@@ -33,7 +33,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the application...'
-                sh 'npm run build'
+                bat 'npm run build'
             }
         }
 
@@ -41,7 +41,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running unit tests...'
-                sh 'npm test'
+                bat 'npm test'
             }
             post {
                 always {
