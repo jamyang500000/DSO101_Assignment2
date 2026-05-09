@@ -1,0 +1,10 @@
+node_modules/
+coverage/
+junit.xml
+.env
+.DS_Store
+*.log
+.vscode/
+.idea/
+dist/
+build/

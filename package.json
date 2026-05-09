@@ -1,0 +1,36 @@
+{
+  "name": "assignment1-node-app",
+  "version": "1.0.0",
+  "description": "To-Do List Application with Jenkins CI/CD Pipeline",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "build": "echo 'Build step - no compilation needed for plain Node.js' && exit 0",
+    "test": "jest --ci --reporters=default --reporters=jest-junit",
+    "test:watch": "jest --watch"
+  },
+  "keywords": ["todo", "jenkins", "ci-cd", "nodejs"],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "body-parser": "^1.20.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "jest-junit": "^16.0.0",
+    "supertest": "^6.3.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": ["**/tests/**/*.test.js"],
+    "collectCoverage": true,
+    "coverageDirectory": "coverage"
+  },
+  "jest-junit": {
+    "outputDirectory": "./",
+    "outputName": "junit.xml",
+    "classNameTemplate": "{classname}",
+    "titleTemplate": "{title}"
+  }
+}
