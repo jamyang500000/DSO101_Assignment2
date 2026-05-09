@@ -45,25 +45,30 @@ pipeline {
             }
             post {
                 always {
-                    // Publish JUnit test results to Jenkins
                     junit 'junit.xml'
                 }
             }
         }
 
-        // Stage 5: Build Docker Image and Deploy
+        // Stage 5: Build Docker Image and Deploy (using raw Docker CLI)
         stage('Deploy') {
             steps {
-                script {
-                    echo 'Building Docker image...'
-                    def dockerImage = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
+                echo 'Building Docker image...'
+                bat "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} -t ${DOCKER_IMAGE}:latest ."
 
-                    echo 'Pushing Docker image to Docker Hub...'
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-creds') {
-                        dockerImage.push()
-                        dockerImage.push('latest')
-                    }
+                echo 'Logging into Docker Hub...'
+                withCredentials([usernamePassword(credentialsId: 'docker-hub-creds',
+                                                  usernameVariable: 'DOCKER_USER',
+                                                  passwordVariable: 'DOCKER_PASS')]) {
+                    bat 'docker login -u %DOCKER_USER% -p %DOCKER_PASS%'
                 }
+
+                echo 'Pushing Docker image to Docker Hub...'
+                bat "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                bat "docker push ${DOCKER_IMAGE}:latest"
+
+                echo 'Logging out from Docker Hub...'
+                bat 'docker logout'
             }
         }
     }
